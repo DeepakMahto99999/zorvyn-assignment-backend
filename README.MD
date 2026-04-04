@@ -207,3 +207,33 @@ Admin ────── creates ──────> Transaction
 
 
 
+
+
+
+
+
+#### step - 4 
+# created seed/seedAdmin 
+
+1. Overview
+
+This script is responsible for creating the initial admin user in the system.
+
+Since the system enforces role-based access control (RBAC) and only admins can create other users, a bootstrap mechanism is required to create the first admin.
+
+This is handled via a one-time seed script, not through public APIs.
+
+`“The first admin is created via a controlled seed script instead of public registration to ensure security and prevent unauthorized admin access.”` 
+
+2. Why Not Create Admin via API?
+Because:
+Anyone could create an admin → security risk
+Breaks RBAC model
+Not realistic in production systems
+
+
+
+
+
+
+
