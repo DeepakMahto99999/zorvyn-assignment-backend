@@ -3,6 +3,8 @@ import cors from 'cors'
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import errorHandler from "./middleware/errorHandler.middleware.js";
+import authRouter from "./routes/auth.routes.js"
+
 
 dotenv.config();
 
@@ -19,6 +21,8 @@ app.use(cors())
 app.get("/", (req, res) => {
     res.send("API running...");
 });
+
+app.use('/api/auth',authRouter)
 
 app.use(errorHandler)
 
