@@ -41,4 +41,169 @@ Initial setup completed
 - Enabled CORS for cross-origin requests
 - Configured request parsing:
   - `express.json()`
-  - `express.urlencoded()`
+  - `express.urlencoded()` 
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+### Step - 3
+## 1. USER MODEL
+ Purpose
+The User model handles:
+  Authentication (login)
+  Authorization (role-based access)
+  Account control (active/inactive)
+
+# Fields
+Field	         Type	    Description
+email	         String	  Unique identifier for login
+password	     String	  Hashed password using bcrypt
+role	         Enum	    Defines access level (viewer, analyst, admin)
+status	       Enum	    Indicates if account is active or disabled 
+
+`Design Decisions`
+- Role-Based Access
+   viewer → read-only access
+   analyst → read + insights
+   admin → full control
+  Enables RBAC using middleware
+
+# Account Status (Important)
+active → user can access system
+inactive → user blocked
+ Even with valid JWT, inactive users are rejected
+
+
+# Security
+Password is stored hashed (bcrypt)
+Never stored in plain text
+
+` Why This Matters`
+Central control over permissions
+Scalable for adding more roles later
+Matches real-world systems
+
+
+## 2. TRANSACTION MODEL
+- Purpose
+Stores all financial records used for:
+  Dashboard summaries
+  Insights analysis
+  Filtering & reporting
+
+
+# Fields
+| Field     | Type     | Description                              |
+| --------- | -------- | ---------------------------------------- |
+| amount    | Number   | Transaction value                        |
+| type      | Enum     | `income` or `expense`                    |
+| category  | String   | Type of transaction (food, travel, etc.) |
+| date      | Date     | When transaction occurred                |
+| notes     | String   | Optional description                     |
+| createdBy | ObjectId | Reference to User                        |
+
+
+` Design Decisions`
+# createdBy (Critical)
+Tracks which user created the record
+Useful for:
+   auditing
+   ownership
+   debugging
+
+# Enum Validation
+Prevents invalid values like:
+"earnings" instead of "income"
+Keeps data clean 
+
+# Indexing (VERY IMPORTANT)
+transactionSchema.index({ date: 1 });
+transactionSchema.index({ category: 1 });
+
+# Why:
+Fast filtering
+Efficient aggregation 
+
+# Timestamps
+Automatically adds:
+  createdAt
+  updatedAt
+
+# Helps with:
+sorting
+tracking history
+
+# Why This Matters
+Core data layer of system
+Supports all analytics features
+Optimized for performance
+
+
+### 3. CATEGORY MODEL ( Strong Design)
+ Purpose
+Standardizes categories to avoid inconsistent data.
+
+
+# Fields
+
+| Field | Type   | Description                        |
+| ----- | ------ | ---------------------------------- |
+| name  | String | Category name (e.g., food, travel) |
+| type  | Enum   | `income` or `expense`              |
+
+
+# Problem It Solves
+Without this model:
+   "Food" vs "food" vs "FOOD"
+     breaks analytics
+
+# Why This Matters
+Ensures consistency
+Improves aggregation accuracy
+Makes system scalable
+
+
+
+### 4. AUDIT MODEL (Advanced Feature)
+ # Purpose
+Tracks system activity for:
+ Monitoring
+ Debugging
+ Security
+
+# Field
+| Field    | Type     | Description            |
+| -------- | -------- | ---------------------- |
+| userId   | ObjectId | Who performed action   |
+| action   | Enum     | CREATE, UPDATE, DELETE |
+| entity   | Enum     | TRANSACTION or USER    |
+| entityId | ObjectId | Target record          |
+| metadata | Object   | Extra details          |
+
+
+# Action Tracking
+Tracks:
+who did what
+when
+
+# Metadata
+Allows storing:
+old values
+new values
+
+
+# Why This Matters
+Tracks actions like create/update/delete
+Helps debugging issues
+Useful in real companies
+
+# RELATIONSHIP BETWEEN MODELS
+Admin ────── creates ──────> Transaction
+   │
+   └──── tracked in ─────> Audit
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
