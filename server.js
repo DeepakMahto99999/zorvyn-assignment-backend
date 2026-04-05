@@ -10,6 +10,7 @@ import authRouter from "./routes/auth.routes.js"
 import userRouter from "./routes/user.routes.js";
 import transactionRouter from "./routes/transaction.routes.js"
 import dashboardRouter from "./routes/dashboard.routes.js";
+import insightsRouter from "./routes/insights.routes.js";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.use('/api/auth',authRouter)
 app.use('/api/users',userRouter)
 app.use('/api/transaction',transactionRouter)
 app.use('/api/dashboard',dashboardRouter)
+app.use("/api/insights", insightsRouter);
 
 app.use(errorHandler)
 

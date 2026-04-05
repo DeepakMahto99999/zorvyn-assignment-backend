@@ -877,5 +877,126 @@ The following screenshots demonstrate the working API:
 
 
 
+### STEP -10  --> INSIGHTS APIs DOCUMENTATION
+# Overview
+
+The Insights APIs provide analytical data derived from transactions.
+These APIs are designed for deeper analysis and are typically used for charts, reports, and data visualization.
+
+Unlike the Dashboard API (which provides quick summaries), Insights APIs focus on aggregation and trends.
 
 
+| Role    | Access        |
+| ------- | ------------- |
+| Viewer  |  Not Allowed |
+| Analyst |  Allowed     |
+| Admin   |  Allowed     |
+
+
+#  1. Category Insights API
+
+🔗 Endpoint
+GET /api/insights/category
+
+# Purpose
+This API provides total transaction amounts grouped by category.
+
+# What it does
+Groups transactions by category
+Calculates total amount for each category
+
+` Sample Response`
+{
+  "success": true,
+  "data": {
+    "food": 5000,
+    "rent": 8000,
+    "transport": 3000
+  }
+}
+` Use Cases`
+1. Pie chart (spending breakdown)
+2. Category-wise analysis
+3. Expense distribution
+
+
+#  2. Monthly Trends API
+
+ Endpoint
+GET /api/insights/trends
+
+ Purpose
+This API provides month-wise income and expense data to analyze trends over time.
+
+# What it does
+1. Groups transactions by month
+2. Separates income and expense
+3. Returns structured trend data
+
+`Sample Response`
+{
+  "success": true,
+  "data": [
+    { "month": 1, "income": 20000, "expense": 10000 },
+    { "month": 2, "income": 30000, "expense": 15000 }
+  ]
+}
+
+`Use Cases`
+1. Line charts
+2. Monthly financial tracking
+3. Trend analysis
+
+
+
+#  3. Income vs Expense API
+
+ Endpoint
+GET /api/insights/income-vs-expense
+
+# Purpose
+This API provides a total comparison of income and expenses.
+
+# What it does
+Aggregates all transactions
+Calculates total income
+Calculates total expense
+
+` Sample Response`
+{
+  "success": true,
+  "data": {
+    "income": 100000,
+    "expense": 40000
+  }
+}
+
+` Use Cases`
+1. Summary cards
+2. Comparison charts
+3. Financial overview
+
+
+## Key Differences Between APIs
+| Feature | Category Insights | Monthly Trends  | Income vs Expense |
+| ------- | ----------------- | --------------- | ----------------- |
+| Type    | Grouping          | Time-based      | Total summary     |
+| Output  | Category totals   | Month-wise data | Overall totals    |
+| Use     | Breakdown         | Trends          | Comparison        |
+
+
+## Implementation Approach
+MongoDB Aggregation ($group) is used for efficient data processing
+Data is transformed into frontend-friendly format
+APIs are lightweight and optimized for performance
+
+# Screenshots
+Include the following screenshots in your submission:
+Insights Category Response
+Monthly Trends Response
+Income vs Expense Response
+
+# These validate:
+Correct aggregation logic
+Proper API responses
+Role-based access working
