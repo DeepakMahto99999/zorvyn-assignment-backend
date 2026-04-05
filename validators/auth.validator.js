@@ -1,5 +1,5 @@
 export const validateLogin = (req, res, next) => {
-  if (!req.body) {
+  if (!req.body || Object.keys(req.body).length === 0) {
     const error = new Error("Request body is missing");
     error.statusCode = 400;
     throw error;

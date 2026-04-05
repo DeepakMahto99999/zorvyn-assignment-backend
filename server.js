@@ -8,7 +8,7 @@ import errorHandler from "./middleware/errorHandler.middleware.js";
 
 import authRouter from "./routes/auth.routes.js"
 import userRouter from "./routes/user.routes.js";
-
+import transactionRouter from "./routes/transaction.routes.js"
 
 dotenv.config();
 
@@ -28,6 +28,9 @@ app.get("/", (req, res) => {
 
 app.use('/api/auth',authRouter)
 app.use('/api/users',userRouter)
+app.use('/api/transaction',transactionRouter)
+
+
 app.use(errorHandler)
 
 app.listen(PORT, () => {

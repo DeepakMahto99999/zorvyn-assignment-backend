@@ -559,3 +559,203 @@ File: 5.1_try-login-after-deactivateUser.png
 
 
 
+
+
+### STEP - 7  Transactions Module Documentation 
+
+`The assignment suggests viewer access limited to dashboard. I extended it to include read-only transaction access to make the system more practical and closer to real-world usage, while still maintaining strict role-based restrictions.`  
+
+
+# Overview
+
+The Transactions module is the core part of the system.
+It is responsible for:
+1. Storing financial records
+2. Filtering and viewing transactions
+3. Updating and deleting records
+4. Supporting dashboard and insights
+
+
+# Access Controller 
+| Role    | Access                               |
+| ------- | ------------------------------------ |
+| Viewer  | View transactions only               |
+| Analyst | View + filter + analyze              |
+| Admin   | Full access (create, update, delete) |
+
+
+
+##  API Endpoints
+ 1. Create Transaction
+- Endpoint
+  POST /api/transactions
+Access Admin only
+
+# Description
+Creates a new financial record.
+
+Example Request
+{
+  "amount": 5000,
+  "type": "income",
+  "category": "salary",
+  "date": "2026-04-01",
+  "notes": "Monthly salary"
+}
+ Response
+{
+  "success": true,
+  "message": "Transaction created",
+  "transaction": {
+    "id": "...",
+    "amount": 5000,
+    "type": "income",
+    "category": "salary"
+  }
+}
+# Screenshot
+File: 6_create-transaction.png
+
+
+ 2. Get All Transactions
+- Endpoint
+GET /api/transactions
+ Access All roles
+
+ # Description
+Returns list of transactions with:
+filtering
+pagination
+sorting
+
+# Screenshot
+File: 7_list-transactions.png
+
+
+ 3. Filtering Transactions
+- Examples
+GET /api/transactions?type=income
+GET /api/transactions?category=salary
+GET /api/transactions?from=2026-04-01&to=2026-04-30
+
+# Description
+Allows filtering based on:
+type (income / expense)
+
+category
+date range
+# Screenshots
+8_filter-transactions.png
+8.1_filter-transaction-salary.png
+8.2_filter-transaction-date.png
+
+
+
+4. Pagination
+- Endpoint
+GET /api/transactions?page=1&limit=2
+
+# Description
+Controls how many records are returned.
+
+# Screenshot
+File: 9_pagination.png
+
+
+
+ 5. Get Single Transaction
+- Endpoint
+GET /api/transactions/:id
+
+# Description
+Returns details of a single transaction.
+
+# Screenshot
+File: 10_single-transaction.png
+
+
+
+ 6. Update Transaction
+- Endpoint
+PUT /api/transactions/:id
+ Access : Admin only
+
+# Description
+Updates transaction details.
+input should be all 
+
+# Screenshot
+File: 12_update-transaction.png
+
+
+# 7. Delete Transaction
+- Endpoint
+DELETE /api/transactions/:id
+ Access : Admin only
+
+# Description
+Deletes a transaction permanently.
+
+# Screenshot
+File: 11_delete-transaction.png
+
+
+ 8. Role Restriction Check
+ Scenario
+
+Viewer and analyst tries to create/delete transaction.
+
+❌ Expected Response
+{
+  "success": false,
+  "message": "Forbidden"
+}
+
+# Screenshot
+File: 13_role-restriction.png
+
+
+# Key Features Implemented
+ 1. Filtering
+Supports:
+type
+category
+date range
+Helps in analysis and reporting
+
+ 2. Pagination
+Reduces large data load
+Improves performance
+
+ 3. Sorting
+Default sorting by date
+Ensures latest data first
+
+ 4. Clean API Response
+_id converted to id
+No unnecessary DB fields
+
+5. RBAC (Role-Based Access Control)
+Admin → full access
+Analyst → read + analysis
+Viewer → read only
+
+ 6. Data Normalization
+type and category stored in lowercase
+ avoids duplicate/inconsistent data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
