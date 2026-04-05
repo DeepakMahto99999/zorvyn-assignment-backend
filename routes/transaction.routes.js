@@ -6,6 +6,7 @@ import {
   getTransactionById,
   updateTransaction,
   deleteTransaction,
+  exportTransactions,
 } from "../controllers/transaction.controller.js";
 
 import verifyToken from "../middleware/auth.middleware.js";
@@ -33,6 +34,12 @@ transactionRouter.get(
   getTransactions
 );
 
+transactionRouter.get(
+  "/export",
+  verifyToken,
+  allowRoles("admin", "analyst"),
+  exportTransactions
+);
 
 //  GET SINGLE (All roles)
 transactionRouter.get(
@@ -60,6 +67,9 @@ transactionRouter.delete(
   allowRoles("admin"),
   deleteTransaction
 );
+
+
+
 
 
 export default transactionRouter;

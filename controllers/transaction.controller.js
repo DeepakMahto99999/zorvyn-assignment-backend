@@ -1,6 +1,6 @@
 import Transaction from "../models/transaction.model.js";
 import asyncHandler from "../middleware/asyncHandler.middleware.js";
-
+import { generateCSV } from "../utils/csvExport.js";
 
 //  Formatter (clean API response)
 const formatTransaction = (t) => ({
@@ -163,4 +163,50 @@ export const deleteTransaction = asyncHandler(async (req, res) => {
     success: true,
     message: "Transaction deleted",
   });
+});
+
+
+// for csv file exporting the transcation in file format
+export const exportTransactions = asyncHandler(async (req, res) => {
+  let { type, category, from, to } = req.query;
+
+  const filter = {};
+
+  // filters (same as GET)
+  if (type) filter.type = type.toLowerCase();
+  if (category) filter.category = category.toLowerCase();
+
+  if (from && to) {
+    const start = new Date(from);
+    const end = new Date(to);
+
+    if (isNaN(start) || isNaN(end)) {
+      const error = new Error("Invalid date format");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    filter.date = { $gte: start, $lte: end };
+  }
+
+  const transactions = await Transaction.find(filter).select(
+    "amount type category date notes"
+  );
+
+  // convert to plain object
+  const data = transactions.map((t) => ({
+    amount: t.amount,
+    type: t.type,
+    category: t.category,
+    date: t.date,
+    notes: t.notes,
+  }));
+
+  const csv = generateCSV(data);
+
+  // set headers
+  res.setHeader("Content-Type", "text/csv");
+  res.setHeader("Content-Disposition", "attachment; filename=transactions.csv");
+
+  res.status(200).send(csv);
 });
