@@ -810,3 +810,72 @@ Easy to extend
 # 14_export-csv-download.png --> proof of working
 
 
+
+
+
+
+
+
+### step - 9 DASHBOARD SUMMARY API DOCUMENTATION 
+🔹 Overview
+
+The Dashboard Summary API provides a high-level financial overview of all transactions in the system.
+
+This API is designed to support the main dashboard view, giving users quick insights into their financial activity without heavy processing.
+
+
+🔗 Endpoint
+GET /api/dashboard/summary
+
+Access Control
+| Role    | Access    |
+| ------- | --------- |
+| Viewer  |   Allowed |
+| Analyst |   Allowed |
+| Admin   |   Allowed |
+
+# Purpose
+This API is optimized for:
+1. Fast response time
+2. Dashboard-level data (not deep analytics)
+3. Quick overview of financial status
+ It avoids heavy database aggregation to keep performance efficient.
+
+# Implementation Approach
+The API uses a simple and efficient approach:
+1. Fetch all transactions from the database
+2. Loop through transactions to calculate:
+     income and expense totals
+     category-wise totals
+      monthly trends
+3. Fetch latest transactions separately
+4. Return structured response
+👉 This avoids complex aggregation pipelines and keeps logic easy to understand.
+
+# Design Decisions
+1. Used in-memory calculations instead of heavy MongoDB aggregation
+2. Focused on readability and simplicity
+3. Optimized for dashboard use-case, not deep analytics
+
+# Screenshots
+The following screenshots demonstrate the working API:
+15_dashboard-summary.png & 15.1_dashboard-summary.png
+  → Shows complete dashboard summary response
+
+👉 These confirm:
+1. Correct calculation of totals
+2. Proper response structure
+3. Successful role-based access
+
+# Notes
+1. This API is designed for quick insights, not detailed reporting
+2. For deeper analysis, separate Insights APIs are implemented
+3. The structure is frontend-friendly and easy to integrate with charts
+
+
+
+
+
+
+
+
