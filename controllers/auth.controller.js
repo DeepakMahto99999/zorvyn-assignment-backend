@@ -72,7 +72,7 @@ export const login = asyncHandler(async (req, res) => {
     message: "Login successful",
     token,
     user: {
-      _id: user._id,
+      id: user._id,
       email: user.email,
       role: user.role,
     },
@@ -143,7 +143,7 @@ export const register = asyncHandler(async (req, res) => {
     success: true,
     message: "User created successfully",
     user: {
-      _id: newUser._id,
+      id: newUser._id,
       email: newUser.email,
       role: newUser.role,
     },
