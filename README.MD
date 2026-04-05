@@ -1000,3 +1000,38 @@ Income vs Expense Response
 Correct aggregation logic
 Proper API responses
 Role-based access working
+
+
+
+
+
+
+
+### Step - 11  Rate Limiting Documentation
+
+# Overview
+
+Rate limiting is implemented to protect the backend from excessive or abusive requests.
+
+It restricts the number of requests a client can make within a specific time window, helping improve system stability and security.
+
+# Purpose
+The rate limiter is used to:
+1. Prevent API abuse
+2. Protect against brute-force attacks (especially on login APIs)
+3. Reduce server load
+4. Ensure fair usage across users 
+
+
+# Implementation
+Rate limiting is implemented using the express-rate-limit middleware.
+
+# Configuration
+windowMs: 15 * 60 * 1000   // 15 minutes
+max: 100                   // max 100 requests per IP
+
+` Behavior`
+Each client (IP) can make up to 100 requests within 15 minutes
+If the limit is exceeded:
+The server blocks further requests temporarily
+A proper error response is returned

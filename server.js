@@ -11,6 +11,7 @@ import userRouter from "./routes/user.routes.js";
 import transactionRouter from "./routes/transaction.routes.js"
 import dashboardRouter from "./routes/dashboard.routes.js";
 import insightsRouter from "./routes/insights.routes.js";
+import rateLimiter from "./middleware/rateLimiter.middleware.js";
 
 dotenv.config();
 
@@ -23,6 +24,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors())
 
+
+// Rate Limiter
+app.use(rateLimiter)
 
 app.get("/", (req, res) => {
     res.send("API running...");
