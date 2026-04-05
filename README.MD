@@ -410,3 +410,152 @@ Authentication is JWT-based
 Authorization is role-based (RBAC)
 Middleware ensures security at backend level
 Validators prevent invalid input before processing
+
+
+
+
+
+
+
+
+
+
+### STEP-6  --> User Management Module Documentation
+
+# Overview
+
+# The User Management module is responsible for:
+1. Managing system users
+2. Enforcing role-based access control (RBAC)
+3. Allowing admin to update or deactivate users
+ All routes are protected and accessible only by Admin users.
+
+# Access Control
+All endpoints require:
+Authorization: Bearer <ADMIN_TOKEN>
+Enforced using:
+verifyToken → authentication
+allowRoles("admin") → authorization
+
+# API Endpoints
+🔹 1. Get All Users
+   Endpoint
+   GET [/api/users](http://localhost:5000/api/users)
+   Access : Admin only
+
+# Description
+Returns a list of all users in the system.
+1. Password is excluded
+2. MongoDB fields are normalized (_id → id)
+3. Sorted by latest users
+- Response Example
+{
+  "success": true,
+  "count": 3,
+  "users": [
+    {
+      "id": "69d134d7e18b468c115d735c",
+      "email": "admin@gmail.com",
+      "role": "admin",
+      "status": "active"
+    }
+  ]
+}
+# 📸 Screenshot : File: 3_listUser-response.png
+- Shows:
+  Successful API call
+  Clean formatted response
+
+
+
+##  2. Update User (Role / Status)
+# API Endpoints
+PATCH /api/users/:id
+# Description
+Updates user role or status.
+
+Example Request
+{
+  "role": "analyst"
+}
+
+OR
+
+{
+  "status": "inactive"
+}
+# Business Rules
+Admin cannot modify another admin 
+Only valid roles allowed (viewer, analyst)
+Only valid status allowed (active, inactive)
+ Response Example
+{
+  "success": true,
+  "message": "User updated successfully",
+  "user": {
+    "id": "69d1fcb5ddd9b3506087fc97",
+    "email": "analyst@gmail.com",
+    "role": "analyst",
+    "status": "active"
+  }
+}
+# Screenshots
+File: 4_update-user-response.png
+ Successful update
+File: 4.1_update-user-response.png
+ Attempt to modify admin → Forbidden
+
+
+##  3. Deactivate User (Soft Delete)
+# API Endpoints
+DELETE /api/users/:id
+
+# Description
+Soft deletes a user by setting:
+status = "inactive"
+
+# Business Rules
+Admin cannot deactivate another admin 
+User is not deleted from DB (soft delete)
+
+ Response Example
+{
+  "success": true,
+  "message": "User deactivated successfully"
+}
+#  Screenshot
+File: 5_deactivateUser-response.png
+    Shows successful deactivation 
+
+
+##  4. Login After Deactivation (Security Check)
+# API Endpoints
+POST /api/auth/login
+#  Description
+Ensures inactive users cannot log in.
+
+  Expected Response
+{
+  "success": false,
+  "message": "Account is inactive"
+}
+# Screenshot
+File: 5.1_try-login-after-deactivateUser.png
+ Shows access blocked 
+
+## Routes Summary 
+ | Method | Endpoint       | Description     | Access |
+| ------ | -------------- | --------------- | ------ |
+| GET    | /api/users     | List all users  | Admin  |
+| PATCH  | /api/users/:id | Update user     | Admin  |
+| DELETE | /api/users/:id | Deactivate user | Admin  |
+
+
+# Final Statement 
+`The user management module is designed with strict role-based access control, soft deletion strategy, and clean API response formatting to ensure security, maintainability, and scalability`
+
+
+
+
+
+

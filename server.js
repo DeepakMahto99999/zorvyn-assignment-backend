@@ -1,9 +1,13 @@
 import express from "express";
 import cors from 'cors'
 import dotenv from "dotenv";
+
 import connectDB from "./config/db.js";
+
 import errorHandler from "./middleware/errorHandler.middleware.js";
+
 import authRouter from "./routes/auth.routes.js"
+import userRouter from "./routes/user.routes.js";
 
 
 dotenv.config();
@@ -23,7 +27,7 @@ app.get("/", (req, res) => {
 });
 
 app.use('/api/auth',authRouter)
-
+app.use('/api/users',userRouter)
 app.use(errorHandler)
 
 app.listen(PORT, () => {
