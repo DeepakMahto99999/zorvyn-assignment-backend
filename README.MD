@@ -1175,4 +1175,35 @@ Run tests:
 
 npm test
  Test Result
-19_tests-pass.png → shows successful test execution
+19_tests-pass.png → shows successful test execution 
+
+
+
+## 🌐 Base URL
+
+Production:
+`https://zorvyn-assignment-backend-v4wu.onrender.com`
+
+Local:
+`http://localhost:5000` 
+
+
+## 📬 API Testing (Postman)
+
+All APIs are tested using a Postman collection.
+# 20_deployed-api-success.png 
+
+
+##  Deployment
+
+`The backend is deployed on Render and fully functional.`
+
+All APIs including authentication, transactions, dashboard, and insights are tested successfully on the deployed environment.
+
+Use base URL variable:
+
+{{baseurl}} = `https://zorvyn-assignment-backend-v4wu.onrender.com`
+
+For protected routes, include:
+
+Authorization: Bearer <token>
