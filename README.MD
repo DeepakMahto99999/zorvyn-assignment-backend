@@ -1154,4 +1154,25 @@ It demonstrates:
 
 Strong understanding of backend architecture
 Clean implementation of business logic
-Real-world features like RBAC, filtering, and analytics
+Real-world features like RBAC, filtering, and analytics 
+
+
+
+
+
+
+
+###  Testing
+
+Basic API tests are implemented using Jest + Supertest.
+
+Test coverage includes:
+
+Login validation (failure case)
+Successful authentication (JWT generation)
+
+Run tests:
+
+npm test
+ Test Result
+19_tests-pass.png → shows successful test execution
